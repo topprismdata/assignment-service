@@ -1,0 +1,12 @@
+topprism:
+  purpose:
+    - world-model
+  capability: person-outlet-assignment
+  platform_layer: trusted-world-state
+  # maturity 枚举(组织级四档): specification-frozen | experiment-validated | applied-component | certified-component
+  maturity: experiment-validated
+  evidence:
+    type: automated-test-suite
+    scope: >
+      CI 5x(3.9-3.13); 8 tests incl. approval-proof exclusive-primary invariant and bitemporal restore.
+  customer_data_in_repo: false
