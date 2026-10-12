@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+assignment_service/__init__.py
+assignment_service/models.py
+assignment_service/policy.py
+assignment_service/service.py
+assignment_service.egg-info/PKG-INFO
+assignment_service.egg-info/SOURCES.txt
+assignment_service.egg-info/dependency_links.txt
+assignment_service.egg-info/requires.txt
+assignment_service.egg-info/top_level.txt
+tests/test_assignment.py
