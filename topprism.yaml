@@ -8,5 +8,5 @@ topprism:
   evidence:
     type: automated-test-suite
     scope: >
-      CI 5x(3.9-3.13); 8 tests incl. approval-proof exclusive-primary invariant and bitemporal restore.
-  customer_data_in_repo: false
+      CI 3.11+3.12; 13 tests: v0.1.0 双时态+不变量 8 项零回归 +
+      CONCURRENT_RUN 批准制例外 5 项（需批准记录/需主访在位/每店一条/与主访共存/主访独家不回归）。

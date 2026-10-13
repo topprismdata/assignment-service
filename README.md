@@ -28,3 +28,11 @@ svc.assign("outlet_e1", "repA", Role.PRIMARY_SELLING, "2026-01-01")
 svc.close(asg.assignment_id, "2026-03-01", decided_by="mgr01")
 svc.restore(asg.assignment_id, "2026-06-01", decided_by="mgr01")
 ```
+
+## 兼跑 CONCURRENT_RUN（v0.2.0，WP15/D4）
+
+主访 1:1 不变量**不放开**；兼跑=独立角色 `CONCURRENT_RUN`（批准制例外）：
+- 必须携带 `source_approved_decision_id`（HITL 仲裁产生的批准记录）
+- 要求同期存在 active 主访（无主先立主）
+- 每店至多一条（策略基数，非 invariant，可特批留痕）
+- 与 v0.1.0 P1 验收共存：有了兼跑，第二主访仍 InvariantViolation

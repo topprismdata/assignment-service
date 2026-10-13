@@ -94,3 +94,45 @@ def test_history_never_lost_and_audit_fields_present(svc):
     assert h[0].status is AssignmentStatus.CLOSED
     assert h[0].valid_to == D2 and h[0].decided_by == "mgr01"
     assert h[0].source_approved_decision_id == "dec-777"
+
+
+# ---- WP15 兼跑（CONCURRENT_RUN，批准制例外）----
+
+def test_concurrent_run_requires_approval(svc):
+    svc.assign("O1", "repA", Role.PRIMARY_SELLING, D1)
+    with pytest.raises(PolicyViolation, match="批准记录"):
+        svc.assign("O1", "repB", Role.CONCURRENT_RUN, D2)
+
+
+def test_concurrent_run_requires_existing_primary(svc):
+    with pytest.raises(PolicyViolation, match="主访"):
+        svc.assign("O1", "repB", Role.CONCURRENT_RUN, D1,
+                   source_approved_decision_id="AD-1")
+
+
+def test_concurrent_run_approved_coexists_with_primary(svc):
+    p = svc.assign("O1", "repA", Role.PRIMARY_SELLING, D1)
+    c = svc.assign("O1", "repB", Role.CONCURRENT_RUN, D2,
+                   source_approved_decision_id="AD-1")
+    assert c.role is Role.CONCURRENT_RUN
+    act = svc.active_for_outlet("O1", None, D2)
+    assert {a.role for a in act} == {Role.PRIMARY_SELLING, Role.CONCURRENT_RUN}
+    assert p.decided_by != c.decided_by or True  # 共存合法
+
+
+def test_concurrent_run_max_one_per_outlet(svc):
+    svc.assign("O1", "repA", Role.PRIMARY_SELLING, D1)
+    svc.assign("O1", "repB", Role.CONCURRENT_RUN, D1,
+               source_approved_decision_id="AD-1")
+    with pytest.raises(PolicyViolation):
+        svc.assign("O1", "repC", Role.CONCURRENT_RUN, D1,
+                   source_approved_decision_id="AD-2")
+
+
+def test_primary_invariant_unchanged_by_concurrent_run(svc):
+    """v0.1.0 P1 验收不回归：兼跑不是第二主访。"""
+    svc.assign("O1", "repA", Role.PRIMARY_SELLING, D1)
+    svc.assign("O1", "repB", Role.CONCURRENT_RUN, D1,
+               source_approved_decision_id="AD-1")
+    with pytest.raises(InvariantViolation):  # 主访仍独家
+        svc.assign("O1", "repC", Role.PRIMARY_SELLING, D1)

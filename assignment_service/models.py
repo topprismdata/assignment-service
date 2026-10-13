@@ -22,6 +22,7 @@ class Role(str, Enum):
     KA_NEGOTIATION = "KA_NEGOTIATION"        # KA 谈判
     PRODUCT_SUPPORT = "PRODUCT_SUPPORT"      # 产品支持
     SUBSTITUTE_COVERAGE = "SUBSTITUTE_COVERAGE"  # 替班（临时顶班，引用被替主访）
+    CONCURRENT_RUN = "CONCURRENT_RUN"            # 兼跑（长期并跑，WP15/D4：需批准记录+主访在位）
 
 
 class AssignmentStatus(str, Enum):

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "assignment-service"
-version = "0.1.0"
+version = "0.2.0"
 description = "Person-outlet Assignment Service per SRAF 01 §39-41 / 02 §40: bitemporal ServiceRelationship, policy-driven cardinality, approval-proof invariants, restore-as-new-interval."
 readme = "README.md"
 requires-python = ">=3.9"

@@ -5,7 +5,7 @@ from assignment_service.models import (
 from assignment_service.policy import ResponsibilityPolicy
 from assignment_service.service import AssignmentService, InvariantViolation, PolicyViolation
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "AssignmentService", "AssignmentStatus", "ConflictViolation",

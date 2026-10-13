@@ -20,6 +20,7 @@ class ResponsibilityPolicy:
         Role.MERCHANDISING: 2,
         Role.KA_NEGOTIATION: 1,
         Role.PRODUCT_SUPPORT: 1,
+        Role.CONCURRENT_RUN: 1,   # 每店至多一条兼跑（批准制，非 invariant）
     })
     # 独家责任角色：超基数 = invariant，不可特批
     exclusive_roles: set[Role] = field(default_factory=lambda: {Role.PRIMARY_SELLING})

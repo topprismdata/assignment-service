@@ -123,6 +123,19 @@ class AssignmentService:
                         f"替班 {days} 天超上限 {self.policy.substitute_max_days}（A3）")
             # 替班与被替主访同日并存是合法的（顶班语义），跳过主访基数检查
 
+        # WP15 兼跑前置校验（D4：1:1 主访不变量不放开，兼跑走批准制例外）
+        if role is Role.CONCURRENT_RUN:
+            if not source_approved_decision_id:
+                raise PolicyViolation(
+                    "兼跑必须引用批准记录 source_approved_decision_id（WP15/D4）")
+            primaries = [
+                a for a in self.active_for_outlet(
+                    outlet_entity_id, Role.PRIMARY_SELLING, valid_from)
+                if _overlap(valid_from, valid_to, a.valid_from, a.valid_to)
+            ]
+            if not primaries:
+                raise PolicyViolation("兼跑要求同期存在主访关系（无主先立主）")
+
         # ---- 冲突检测：同店同角色 active 基数 ----
         overlapping = [
             a for a in self.active_for_outlet(outlet_entity_id, role, valid_from)
